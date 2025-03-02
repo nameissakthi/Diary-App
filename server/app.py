@@ -1,13 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from dotenv import dotenv_values
+from datetime import datetime
 app = Flask(__name__)
 import psycopg2
 
 config = dotenv_values(".env")
-
-db = {
-    
-}
 
 try:
     conn = psycopg2.connect(host= "localhost",
@@ -35,13 +32,57 @@ try:
     """)
     conn.commit()
     print("Table Created successfully")
-except:
-    print("Table is Not Created")
+except Exception as error:
+    print(f"Table is Not Created. Error : {error}")
 
 
 @app.route("/")
 def home():
     return "API WORKING"
+
+@app.route("/api/diary/list")
+def list():
+    try:
+        cur.execute("""
+            SELECT * FROM diary
+        """)
+        records = cur.fetchall()
+        return jsonify({ 'success': True, 'data' : records })
+    except Exception as error:
+        return jsonify({ 'success': False, 'message' : error })
+    
+
+@app.route("/api/diary/add", methods=['POST'])
+def add():
+    try:
+        date = datetime.today().strftime('%d-%m-%Y')
+        time =  datetime.now().time().strftime("%H:%M:%S")
+        message = request.form['message']
+        cur.execute("INSERT INTO diary(date, time, message) VALUES(%s, %s, %s)", [date, time, message])
+        conn.commit()
+        return jsonify({ 'success': True, 'message': "Diary Record Added Successfully" })
+    except Exception as error:
+        return jsonify({ 'success': False, 'message' : error })
+    
+@app.route("/api/diary/delete")
+def delete():
+    try:
+        id = request.json['id']
+        cur.execute(f"DELETE FROM diary WHERE id={id}")
+        conn.commit()
+        return jsonify({ 'success': True, 'message': "Diary Record Deleted Successfully" })
+    except Exception as error:
+        return jsonify({ 'success': False, 'message' : error })
+    
+@app.route("/api/diary/get")
+def get():
+    try:
+        id = request.json['id']
+        cur.execute(f"SELECT * FROM diary WHERE id={id}")
+        data = cur.fetchone()
+        return jsonify({ 'success': True, 'data': data, 'message': "Diary Record Retrieved Successfully" })
+    except Exception as error:
+        return jsonify({ 'success': False, 'message' : error })
 
 if(__name__=="__main__"):
     app.run(debug=True)
