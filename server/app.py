@@ -47,7 +47,7 @@ def list():
             SELECT * FROM diary
         """)
         records = cur.fetchall()
-        return jsonify({ 'success': True, 'data' : records })
+        return jsonify({ 'success' : True, 'Messages' : records })
     except Exception as error:
         return jsonify({ 'success': False, 'message' : error })
     
@@ -64,7 +64,7 @@ def add():
     except Exception as error:
         return jsonify({ 'success': False, 'message' : error })
     
-@app.route("/api/diary/delete")
+@app.route("/api/diary/delete", methods=["GET", "POST"])
 def delete():
     try:
         id = request.json['id']
@@ -74,7 +74,7 @@ def delete():
     except Exception as error:
         return jsonify({ 'success': False, 'message' : error })
     
-@app.route("/api/diary/get")
+@app.route("/api/diary/get", methods=["GET", "POST"])
 def get():
     try:
         id = request.json['id']
@@ -85,4 +85,4 @@ def get():
         return jsonify({ 'success': False, 'message' : error })
 
 if(__name__=="__main__"):
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
