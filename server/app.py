@@ -7,7 +7,7 @@ import psycopg2
 config = dotenv_values(".env")
 
 try:
-    conn = psycopg2.connect(host= "localhost",
+    conn = psycopg2.connect(host= config["DB_HOST"],
         port= 5432,
         user= config["DB_USER"],
         password= config["DB_PASSWORD"],
