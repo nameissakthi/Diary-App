@@ -1,6 +1,6 @@
 // api.js
 
-const BASE_URL = 'http://192.168.204.240:5000/api/diary'; // Update with your actual server URL
+const BASE_URL = 'http://192.168.204.240:5000/api/diary';
 
 export const addDiaryRecord = async (record) => {
   try {
