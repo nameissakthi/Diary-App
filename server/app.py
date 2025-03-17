@@ -57,7 +57,8 @@ def add():
     try:
         date = datetime.today().strftime('%d-%m-%Y')
         time =  datetime.now().time().strftime("%H:%M:%S")
-        message = request.form['message']
+        message = request.get_json()
+        message = message.get('message')
         cur.execute("INSERT INTO diary(date, time, message) VALUES(%s, %s, %s)", [date, time, message])
         conn.commit()
         return jsonify({ 'success': True, 'message': "Diary Record Added Successfully" })
@@ -67,9 +68,10 @@ def add():
 @app.route("/api/diary/delete", methods=["GET", "POST"])
 def delete():
     try:
-        id = request.json['id']
-        cur.execute(f"DELETE FROM diary WHERE id={id}")
-        conn.commit()
+        idObj = request.get_json()
+        print(idObj)
+        # cur.execute(f"DELETE FROM diary WHERE id={id}")
+        # conn.commit()
         return jsonify({ 'success': True, 'message': "Diary Record Deleted Successfully" })
     except Exception as error:
         return jsonify({ 'success': False, 'message' : error })

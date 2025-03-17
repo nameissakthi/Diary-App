@@ -12,8 +12,7 @@ export default function DiaryFormScreen({ navigation }) {
       return;
     }
     try {
-      // Create a diary entry object; you can add more fields as needed
-      const newEntry = { message, date: new Date().toISOString() };
+      const newEntry = { message };
       await addDiaryRecord(newEntry);
       Alert.alert('Success', 'Diary entry added successfully.');
       navigation.goBack();

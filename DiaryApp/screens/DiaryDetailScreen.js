@@ -1,7 +1,7 @@
 // screens/DiaryDetailScreen.js
 import React, { useState, useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
-import { getDiaryRecord } from '../api';
+import { View, Text, ActivityIndicator, StyleSheet, Alert, TouchableOpacity, Button } from 'react-native';
+import { getDiaryRecord, deleteDiaryRecord } from '../api';
 
 export default function DiaryDetailScreen({ route, navigation }) {
   // Retrieve the record ID from navigation parameters
@@ -11,7 +11,6 @@ export default function DiaryDetailScreen({ route, navigation }) {
   const [record, setRecord] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch the diary record when the component mounts
   useEffect(() => {
     const fetchRecord = async () => {
       try {
@@ -82,5 +81,5 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     marginBottom: 10,
-  },
+  }
 });
