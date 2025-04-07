@@ -3,22 +3,25 @@ from dotenv import dotenv_values
 from datetime import datetime
 import psycopg2
 from flask_cors import CORS
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# Load environment variables
-config = dotenv_values(".env")
+DB_HOST = os.environ.get("DB_HOST")
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_NAME = os.environ.get("DB_NAME")
 
 # Function to get DB connection
 def get_db_connection():
     try:
         conn = psycopg2.connect(
-            host=config["DB_HOST"],
+            host=DB_HOST,
             port=5432,
-            user=config["DB_USER"],
-            password=config["DB_PASSWORD"],
-            database=config["DB_NAME"]
+            user=DB_USER,
+            password=DB_PASSWORD,
+            database=DB_NAME
         )
         return conn
     except Exception as e:
