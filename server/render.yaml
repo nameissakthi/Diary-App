@@ -1,14 +1,15 @@
 services:
   - type: web
-    name: diary-app
+    name: diary-api
     env: python
-    plan: free
-    buildCommand: ""
-    startCommand: python app.py
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python server/app.py"
     envVars:
+      - key: DB_HOST
+        value: your-db-host
       - key: DB_USER
-        sync: false
+        value: your-db-user
       - key: DB_PASSWORD
-        sync: false
+        value: your-db-password
       - key: DB_NAME
-        sync: false
+        value: your-db-name
