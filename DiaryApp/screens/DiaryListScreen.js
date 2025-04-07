@@ -2,14 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, Button, TouchableOpacity, StyleSheet } from 'react-native';
 import { listDiaryRecords } from '../api';
+import { BACKEND_URL } from "@env"
+import { DevSettings } from 'react-native';
 
 export default function DiaryListScreen({ navigation }) {
   const [diaries, setDiaries] = useState([]);
 
   const fetchDiaries = async () => {
     try {
-      const data = await listDiaryRecords();
-      // Expected response format: { "Messages": [[id, date, time, message], ...], "success": true }
+      const data = await listDiaryRecords(BACKEND_URL);
       if (data.success) {
         setDiaries(data.Messages);
       } else {
@@ -21,9 +22,12 @@ export default function DiaryListScreen({ navigation }) {
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', fetchDiaries);
-    return unsubscribe;
+    fetchDiaries();
   }, [navigation]);
+
+  const reloadApp = () => {
+    DevSettings.reload();
+  }
 
   const renderItem = ({ item }) => {
     // Destructure the array: [id, date, time, message]
@@ -41,7 +45,10 @@ export default function DiaryListScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Button title="Add New Entry" onPress={() => navigation.navigate('DiaryForm')} />
+      <View style={styles.buttonContainer}>
+        <Button title="Add New Entry" onPress={() => navigation.navigate('DiaryForm')} />
+        <Button title="Reload" onPress={reloadApp} />
+      </View>
       <FlatList
         data={diaries}
         keyExtractor={(item) => item[0].toString()}
@@ -66,4 +73,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  buttonContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });

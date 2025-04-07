@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { addDiaryRecord } from '../api';
+import { BACKEND_URL } from "@env"
 
 export default function DiaryFormScreen({ navigation }) {
   const [message, setMessage] = useState('');
@@ -13,7 +14,7 @@ export default function DiaryFormScreen({ navigation }) {
     }
     try {
       const newEntry = { message };
-      await addDiaryRecord(newEntry);
+      await addDiaryRecord(newEntry, BACKEND_URL);
       Alert.alert('Success', 'Diary entry added successfully.');
       navigation.goBack();
     } catch (error) {

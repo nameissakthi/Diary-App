@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, Alert, TouchableOpacity, Button } from 'react-native';
 import { getDiaryRecord, deleteDiaryRecord } from '../api';
+import { BACKEND_URL } from "@env"
 
 export default function DiaryDetailScreen({ route, navigation }) {
   // Retrieve the record ID from navigation parameters
@@ -14,7 +15,7 @@ export default function DiaryDetailScreen({ route, navigation }) {
   useEffect(() => {
     const fetchRecord = async () => {
       try {
-        const data = await getDiaryRecord(id);
+        const data = await getDiaryRecord(id, BACKEND_URL);
         const [recordId, date, time, message] = data.data;
         setRecord({
             recordId,

@@ -1,10 +1,6 @@
-// api.js
-
-const BASE_URL = 'http://192.168.204.240:5000/api/diary';
-
-export const addDiaryRecord = async (record) => {
+export const addDiaryRecord = async (record, BACKEND_URL) => {
   try {
-    const response = await fetch(`${BASE_URL}/add`, {
+    const response = await fetch(`${BACKEND_URL}/api/diary/add`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(record),
@@ -16,20 +12,20 @@ export const addDiaryRecord = async (record) => {
   }
 };
 
-export const listDiaryRecords = async () => {
+export const listDiaryRecords = async (BACKEND_URL) => {
   try {
-    const response = await fetch(`${BASE_URL}/list`);
-    return await response.json();
+    const response = await fetch(`${BACKEND_URL}/api/diary/list`)
+    const res = await response.json()
+    return res;
   } catch (error) {
     console.error('Error listing diary records:', error);
-    throw error;
   }
 };
 
-export const deleteDiaryRecord = async (id) => {
+export const deleteDiaryRecord = async (id, BACKEND_URL) => {
   try {
     console.log(id)
-    // const response = await fetch(`${BASE_URL}/delete`, {
+    // const response = await fetch(`${BACKEND_URL}/delete`, {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify({ id }),
@@ -41,9 +37,9 @@ export const deleteDiaryRecord = async (id) => {
   }
 };
 
-export const getDiaryRecord = async (id) => {
+export const getDiaryRecord = async (id, BACKEND_URL) => {
   try {
-    const response = await fetch(`${BASE_URL}/get`, {
+    const response = await fetch(`${BACKEND_URL}/api/diary/get`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id }),
